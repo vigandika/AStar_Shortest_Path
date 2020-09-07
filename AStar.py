@@ -1,3 +1,4 @@
+from copy import copy
 from operator import attrgetter
 from typing import List
 
@@ -20,16 +21,19 @@ class AStar:
 
         while len(open_list) > 0:
             current_node = min(open_list, key=attrgetter('f_score'))
+
+            AStar.print_path(current_node)
             open_list.remove(current_node)
             closed_list.append(current_node)
 
             if current_node.h_score == 0:
                 AStar.print_path(current_node)
 
-            children = current_node.neighbors
+            index = AStar.in_list(Node.graph, current_node)
+            children = Node.graph[index].neighbors
 
             for child in children:
-                if child in closed_list:
+                if AStar.in_list(closed_list, child[0]) != -1:
                     continue
 
                 child[0].g_score = current_node.g_score + child[1]
@@ -42,14 +46,19 @@ class AStar:
                 child[0].parent = current_node
                 open_list.append(child[0])
 
+    path = []
     @staticmethod
     def print_path(current_node):
         if current_node.parent is None:
-            print(current_node.name)
+            AStar.path.append(current_node.name)
+            print('--'.join(reversed(AStar.path))   )
+            AStar.path = []
+            # print(current_node.name)
             return
 
+        AStar.path.append(current_node.name)
         AStar.print_path(current_node.parent)
-        print(current_node.name)
+        AStar.path = []
         return
 
     @staticmethod
