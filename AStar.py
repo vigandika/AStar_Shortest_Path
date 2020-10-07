@@ -6,11 +6,9 @@ from node import Node
 
 
 class AStar:
-    Node.create_graph()
 
     @staticmethod
     def get_shortest_path():
-        Node.create_graph()
         open_list = []
         closed_list = []
 
@@ -47,13 +45,14 @@ class AStar:
                 open_list.append(child[0])
 
     path = []
+
     @staticmethod
     def print_path(current_node):
         if current_node.parent is None:
             AStar.path.append(current_node.name)
-            print('--'.join(reversed(AStar.path))   )
+            print('--'.join(reversed(AStar.path)))
             AStar.path = []
-            # print(current_node.name)
+
             return
 
         AStar.path.append(current_node.name)
